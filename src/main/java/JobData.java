@@ -75,7 +75,8 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            //added .toLowerCase() to compare the search value with the field value
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -91,11 +92,25 @@ public class JobData {
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
-        // load data, if not already loaded
+        // Load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+
+        for (HashMap<String, String> job : allJobs) {
+            // Iterate over each column (key) of the job
+            for (String key : job.keySet()) {
+                // Check if the column value contains the search term
+                if (job.get(key).toLowerCase().contains(value.toLowerCase())) {
+                    // If the search term is found in any column, add the job to the results
+                    results.add(job);
+                    // Break the inner loop to avoid adding the same job multiple times
+                    break;
+                }
+            }
+        }
+
+        return results;
     }
 
     /**
